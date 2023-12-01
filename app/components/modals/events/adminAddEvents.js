@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 
-export default function AddAdminEvents() {
+export default function AddAdminEvents({ setReloadEvents, reloadEvents }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [eventName, setEventName] = useState(null);
   const [eventDes, setEventDes] = useState(null);
@@ -46,6 +46,7 @@ export default function AddAdminEvents() {
         if (!response.ok) {
           throw new Error("Network response was not ok: ");
         }
+        setReloadEvents(!reloadEvents);
         return response.json();
       })
       .then((data) => {
@@ -70,9 +71,12 @@ export default function AddAdminEvents() {
 
   return (
     <>
-      <Button onPress={onOpen} color="secondary">
-        Add Events
-      </Button>
+      <button
+        onClick={onOpen}
+        className=" bg-heart-yellow rounded-xl font-Oswald  p-2 min-w-[100px] min-h-[24px]"
+      >
+        Add Event
+      </button>
       <Modal
         backdrop="opaque"
         isOpen={isOpen}

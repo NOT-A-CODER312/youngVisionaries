@@ -1,23 +1,14 @@
 "use client";
 
-import AddAdminEvents from "@/app/components/modals/events/adminAddEvents";
-import { useSession } from "next-auth/react";
-// import { preload } from "./getEvents";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import EventCard from "./eventCard";
-import SuggenstEvents from "@/app/components/modals/events/suggestEents";
-import Link from "next/link";
 
-export default function Events() {
-  const { data: session } = useSession();
-
+export default function EventsSuggestion() {
   const [eventsData, setEventsData] = useState([]);
   const [reloadEvents, setReloadEvents] = useState(true);
 
-  // preload();
-
   async function GetEventsData() {
-    const res = await fetch(`/api/events/getEvents`, {
+    const res = await fetch(`/api/events/getEventsSugs`, {
       headers: {
         accept: "application/json",
       },
@@ -40,31 +31,14 @@ export default function Events() {
 
   useEffect(() => {
     GetEventsData();
+    console.log("reloaded ");
   }, [reloadEvents]);
 
   return (
     <div className="flex min-h-screen flex-col items-center ">
       {" "}
-      <div className=" text-4xl font-Oswald font-semibold">Events</div>
-      <div
-        className={`${
-          !session
-            ? "hidden"
-            : session.user?.username?.startsWith("admin-")
-            ? " ml-auto mt-4 mr-4 flex gap-x-4"
-            : "hidden"
-        }`}
-      >
-        <Link href={"/events/events-suggestion-list"}>
-          <button className=" bg-heart-yellow rounded-xl font-Oswald  p-2 min-w-[100px] min-h-[24px]">
-            See Suggestion
-          </button>
-        </Link>
-        <SuggenstEvents />
-        <AddAdminEvents
-          reloadEvents={reloadEvents}
-          setReloadEvents={setReloadEvents}
-        />
+      <div className=" text-4xl font-Oswald font-semibold">
+        Events Suggestions
       </div>
       <div className=" flex flex-wrap w-full justify-center items-center gap-6 mt-12">
         {eventsData.map(
